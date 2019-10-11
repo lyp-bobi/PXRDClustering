@@ -46,6 +46,9 @@ def tiffToFeature(s):
     for f in feature:
         if np.isnan(f):
             f=0
+    # print(feature)
+    feature=feature-np.percentile(feature,50)
+    feature[feature<0]=0
     return feature
     # print(len(feature))
 

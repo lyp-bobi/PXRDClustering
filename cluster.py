@@ -3,6 +3,8 @@ import os
 import time
 import numpy as np
 
+from sklearn import metrics
+
 import tiffReader
 import chiReader
 
@@ -27,7 +29,8 @@ for i in range(datanum):
     path= os.path.abspath(path)
     features.append(tiffReader.tiffToFeature(path))
 
-clustering = sklearn.cluster.MeanShift().fit(features)
+# clustering = sklearn.cluster.MeanShift().fit(features)
+clustering = sklearn.cluster.KMeans(n_clusters=10).fit(features)
 print(clustering.labels_)
 end=time.time()
 print("used time is "+str(end-start))
@@ -53,13 +56,26 @@ for i in range(datanum):
     path=os.path.join("./500C chi",list2[i])
     path= os.path.abspath(path)
     # print(chiReader.chiToFeature(path))
-    features2.append(chiReader.chiToFeature(path))
+    # features2.append(chiReader.chiToFeature(path))
+    features2.append(chiReader.chiToPeak(path))
 
 
-clustering2 = sklearn.cluster.MeanShift().fit(features2)
+# clustering2 = sklearn.cluster.MeanShift().fit(features2)
+clustering2 = sklearn.cluster.KMeans(n_clusters=10).fit(features)
 print(clustering2.labels_)
 end=time.time()
 print("used time is "+str(end-start))
 
 print("the difference of clustering is")
 print(clustering.labels_-clustering2.labels_)
+
+print(metrics.adjusted_rand_score(clustering.labels_,clustering2.labels_))
+
+# a=clustering.labels_-clustering2.labels_
+#
+# print(len(a))
+# count=0
+# for i in a:
+#     if i!=0:
+#         count+=1
+# print(count)
