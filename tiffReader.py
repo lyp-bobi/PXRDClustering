@@ -15,8 +15,10 @@ def inRange(x,y):
     else:
         return False
 
+# np.set_printoptions(threshold=1e9)
 def tiffToFeature(s):
     img=tifffile.imread(s)
+    # print(img)
     feature=[]
     pt=center.copy()
     i=0
@@ -48,6 +50,7 @@ def tiffToFeature(s):
             f=0
     # print(feature)
     feature=feature-np.percentile(feature,50)
+    feature[feature>np.percentile(feature,99)]=np.percentile(feature,99)
     feature[feature<0]=0
     return feature
     # print(len(feature))
