@@ -5,27 +5,31 @@ import numpy as np
 
 from sklearn import metrics
 
+import json
+
 import tiffReader
 import chiReader
+
+
 
 np.set_printoptions(threshold=1e9)
 
 #cluster tifs
 
-list = os.listdir("./500C")
-datanum=len(list)
+names = os.listdir("./500C")
+datanum=len(names)
 start=time.time()
 sumOfTifs=0
 for i in range(datanum-1,-1,-1):
-    if(list[i].find(".tif")!=-1):
+    if(names[i].find(".tif")!=-1):
         sumOfTifs+=1
     else:
-        list.remove(list[i])
+        names.remove(names[i])
 datanum=sumOfTifs
 features=[]
 
 for i in range(datanum):
-    path=os.path.join("./500C",list[i])
+    path=os.path.join("./500C", names[i])
     path= os.path.abspath(path)
     features.append(tiffReader.tiffToFeature(path))
 
@@ -69,7 +73,25 @@ print("used time is "+str(end-start))
 print("the difference of clustering is")
 print(clustering.labels_-clustering2.labels_)
 
-print(metrics.adjusted_rand_score(clustering.labels_,clustering2.labels_))
+print("adjust rand score is"+str(metrics.adjusted_rand_score(clustering.labels_,clustering2.labels_)))
+
+clustmap1={}
+clustmap2={}
+for i in range(datanum):
+    clustmap1[names[i]]={"clusterNum":str(clustering.labels_[i])}
+    clustmap2[names[i]] ={"clusterNum":str(clustering2.labels_[i])}
+
+jsObj = json.dumps(clustmap1)
+
+fileObject = open('tiffResult.json', 'w')
+fileObject.write(jsObj)
+fileObject.close()
+
+jsObj = json.dumps(clustmap2)
+
+fileObject = open('chiResult.json', 'w')
+fileObject.write(jsObj)
+fileObject.close()
 
 # a=clustering.labels_-clustering2.labels_
 #

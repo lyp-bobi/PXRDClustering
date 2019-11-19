@@ -49,7 +49,7 @@ def tiffToFeature(s):
         if np.isnan(f):
             f=0
     # print(feature)
-    feature=feature-np.percentile(feature,50)
+    feature=feature-np.percentile(feature,80)
     feature[feature>np.percentile(feature,99)]=np.percentile(feature,99)
     feature[feature<0]=0
     return feature
