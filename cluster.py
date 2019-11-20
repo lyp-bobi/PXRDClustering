@@ -27,7 +27,7 @@ for i in range(datanum-1,-1,-1):
         names.remove(names[i])
 datanum=sumOfTifs
 features=[]
-
+names.sort()
 for i in range(datanum):
     path=os.path.join("./500C", names[i])
     path= os.path.abspath(path)
@@ -41,23 +41,24 @@ print("used time is "+str(end-start))
 
 #cluster chis
 
-list2 = os.listdir("./500C chi")
-datanum2=len(list2)
+names2 = os.listdir("./500C chi")
+datanum2=len(names2)
 start=time.time()
 sumOfChis=0
 for i in range(datanum2-1,-1,-1):
-    if(list2[i].find(".chi")!=-1):
+    if(names2[i].find(".chi")!=-1):
         sumOfChis+=1
     else:
-        list2.remove(list2[i])
-print(len(list2))
+        names2.remove(names2[i])
+print(len(names2))
+names2.sort()
 datanum2=sumOfChis
 if datanum!=datanum2:
     print(datanum,datanum2)
 features2=[]
 
 for i in range(datanum):
-    path=os.path.join("./500C chi",list2[i])
+    path=os.path.join("./500C chi", names2[i])
     path= os.path.abspath(path)
     # print(chiReader.chiToFeature(path))
     # features2.append(chiReader.chiToFeature(path))

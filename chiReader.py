@@ -35,7 +35,7 @@ def chiToPeak(s):
         cutted=line.split(" ")
 
         feature.append(float(cutted[3]))
-    feature=feature-np.percentile(feature,80)
+    feature=feature-np.percentile(feature,80)#这个80可以改，不一定和那边那个一样
     feature[feature<0]=0
     # print(feature)
     return feature
